@@ -44,7 +44,7 @@ void Session::async_read(){
             }else{
                 room.leave(shared_from_this());
                 if(ec==boost::asio::error::eof){
-                    cout<<"Connection closed by peer"<<endl;
+                    cout<<"Connection closed by peer : client : "<<id<<endl;
                 }
                 else {
                     cout<<"Read error : "<<ec.message()<<endl;
@@ -56,7 +56,7 @@ void Session::async_read(){
 void Session::async_write(string messageBody,size_t messageLength){
     auto write_handler = [&](boost::system::error_code ec,size_t bytes_transffered){
         if(!ec){
-            cout<<"Data is written to the socket"<<endl;
+            cout<<"Data is written to the socket"<<endl<<endl;
         }else{
             cout<<"Write error : "<<ec.message()<<endl;
         }
@@ -113,6 +113,7 @@ int main(int argc,char *argv[]){
             cerr<<"Usage : server <port>"<<endl;
             return 1;
         }
+        cout << "Hello from Chatroom Server 👋" << endl;
         Room room;
         boost::asio::io_context io_context;
         tcp::endpoint endpoint(tcp::v4(),atoi(argv[1]));

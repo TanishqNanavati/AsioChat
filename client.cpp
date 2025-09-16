@@ -26,6 +26,8 @@ int main(int argc,char *argv[]){
         return 1;
     }
 
+    cout << "This is client " << endl;
+
     boost::asio::io_context io_context;
     tcp::socket socket(io_context);
     tcp::resolver resolver(io_context);
