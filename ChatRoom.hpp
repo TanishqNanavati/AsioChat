@@ -40,11 +40,16 @@ class Session : public Participant,public enable_shared_from_this<Session>{
         void write(Message &message);
         void async_read();
         void async_write(string MessageBody,size_t messageLength);
+
+        int getId() const { return id; }
+
     private:
         tcp::socket clientSocket;
         boost::asio::streambuf buffer;
         Room &room;
         deque<Message>messageQueue;
+        int id;
+        static inline int nextId=1;
 
 };
 

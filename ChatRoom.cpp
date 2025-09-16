@@ -25,8 +25,9 @@ void Room::deliver(ParticipantPtr participant,Message &message){
     }
 }
 
+
 Session::Session(tcp::socket s, Room &room)
-    : clientSocket(std::move(s)), room(room) {}
+    : clientSocket(std::move(s)), room(room), id(nextId++) {}
 
 
 void Session::async_read(){
@@ -36,7 +37,7 @@ void Session::async_read(){
             if(!ec){
                 string data(boost::asio::buffers_begin(buffer.data()),boost::asio::buffers_begin(buffer.data())+bytes_transffered);
                 buffer.consume(bytes_transffered);
-                cout<<"Received : "<<data<<endl;
+                cout << "Received : client " << id << " : " << data << endl;
                 Message message(data);
                 deliver(message);
                 async_read();
@@ -117,7 +118,7 @@ int main(int argc,char *argv[]){
         accept_connection(io_context,argv[1],acceptor,room,endpoint);
 
         io_context.run();
-        
+
     }
     catch(exception &e){
         cerr<<"Exception : "<<e.what()<<endl;
