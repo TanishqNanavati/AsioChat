@@ -81,9 +81,12 @@ void Session::write(Message &message){
     }
 }
 
-void Session::deliver(Message &message){
-    room.deliver(shared_from_this(),message);
+void Session::deliver(Message &message) {
+    std::string taggedMsg = "client " + std::to_string(id) + " : " + message.getBody();
+    Message newMessage(taggedMsg);
+    room.deliver(shared_from_this(), newMessage);
 }
+
 
 void Session::start(){
     room.join(shared_from_this());
